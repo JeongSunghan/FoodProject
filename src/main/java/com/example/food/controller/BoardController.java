@@ -134,7 +134,7 @@ public class BoardController {
 		String files = jsonUtil.list2Json(fileList);
 
 		// 게시글 객체 생성 후 등록 => 수정해야함
-		Board board = new Board(title, content, sessUid);
+		Board board = new Board(0, title, content, sessUid, null, 0, 0, 0, files, files, files, files, files, files);
 		boardService.insertBoard(board);
 		return "redirect:/board/list";
 	}

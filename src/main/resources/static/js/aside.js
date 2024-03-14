@@ -15,7 +15,7 @@ function changeStateMsg() {
   $('#stateMsgInput').attr({'class': 'mt-2 d-none'});   // 입력창 감추기
   $.ajax({      // Asynchronous Javascript and XML, 화면의 일부분만 바꿀 때 주로 사용
     type: 'GET',
-    url: '/abbs/aside/stateMsg',
+    url: '/food/aside/stateMsg',
     data: {stateMsg: stateInputVal},
     success: function(result) {
       console.log('state message:', stateInputVal, result);
@@ -27,7 +27,7 @@ function changeStateMsg() {
 function getWeather() {
   $.ajax({
     type: 'GET',
-    url: '/abbs/aside/weather',
+    url: '/food/aside/weather',
     success: function(result) {
       $('#weather').html(result);
     }

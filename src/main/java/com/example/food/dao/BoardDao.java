@@ -35,7 +35,7 @@ public interface BoardDao {
 			+ " default, default, default, default, default, #{files})")
 	void insertBoard(Board board);
 	
-	
+
 	//여기 수정
 	@Update("update board set title=#{title}, content=#{content}, modTime=now(), "
 			+ " files=#{files} where bid=#{bid}")

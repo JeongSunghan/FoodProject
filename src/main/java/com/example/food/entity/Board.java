@@ -172,4 +172,8 @@ public class Board {
 		this.phoneNumber = phoneNumber;
 	}
 
+	public String getFiles() {
+		return null;
+	}
+
 }
