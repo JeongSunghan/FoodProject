@@ -133,7 +133,7 @@ public class BoardController {
 		// 파일명 리스트를 JSON 형태로 변환
 		String files = jsonUtil.list2Json(fileList);
 
-		// 게시글 객체 생성 후 등록
+		// 게시글 객체 생성 후 등록 => 수정해야함
 		Board board = new Board(title, content, sessUid);
 		boardService.insertBoard(board);
 		return "redirect:/board/list";
@@ -148,7 +148,7 @@ public class BoardController {
 		if (!uid.equals(sessUid) && (option == null || option.equals("")))
 			boardService.increaseViewCount(bid);
 
-		// 게시글 및 첨부 파일 정보 가져오기
+		// 게시글 및 첨부 파일 정보 가져오기 => 수정해야함
 		Board board = boardService.getBoard(bid);
 		String jsonFiles = board.getFiles();
 		if (!(jsonFiles == null || jsonFiles.equals(""))) {

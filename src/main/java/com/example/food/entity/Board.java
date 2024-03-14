@@ -12,7 +12,7 @@ public class Board {
 	private int viewCount;
 	private int likeCount;
 	private String uname;
-	
+
 	//
 	private String titleImage;
 	private String category;
@@ -22,6 +22,7 @@ public class Board {
 	private String phoneNumber;
 
 	public Board() {}
+
 	public Board(int bid, String title, String content, String uid, LocalDateTime modTime, int isDeleted, int viewCount,
 			int likeCount, String titleImage, String category, String foodName, String openClosed, String address,
 			String phoneNumber) {
@@ -39,14 +40,16 @@ public class Board {
 		this.openClosed = openClosed;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
+
 	}
 
 	@Override
 	public String toString() {
 		return "Board [bid=" + bid + ", title=" + title + ", content=" + content + ", uid=" + uid + ", modTime="
 				+ modTime + ", isDeleted=" + isDeleted + ", viewCount=" + viewCount + ", likeCount=" + likeCount
-				+ ", titleImage=" + titleImage + ", category=" + category + ", foodName=" + foodName + ", openClosed="
-				+ openClosed + ", address=" + address + ", phoneNumber=" + phoneNumber + "]";
+				+ ", uname=" + uname + ", titleImage=" + titleImage + ", category=" + category + ", foodName="
+				+ foodName + ", openClosed=" + openClosed + ", address=" + address + ", phoneNumber=" + phoneNumber
+				+ "]";
 	}
 
 	public int getBid() {
@@ -111,6 +114,14 @@ public class Board {
 
 	public void setLikeCount(int likeCount) {
 		this.likeCount = likeCount;
+	}
+
+	public String getUname() {
+		return uname;
+	}
+
+	public void setUname(String uname) {
+		this.uname = uname;
 	}
 
 	public String getTitleImage() {
