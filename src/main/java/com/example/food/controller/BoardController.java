@@ -140,6 +140,7 @@ public class BoardController {
 			model.addAttribute("fileList", fileList);
 		}
 		model.addAttribute("board", board);
+		System.out.println(board.getCategory());
 
 		// 좋아요 처리
 		Like like = likeService.getLike(bid, sessUid);

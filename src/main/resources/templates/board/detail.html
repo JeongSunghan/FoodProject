@@ -77,11 +77,7 @@
 							<h5>[[${board.title}]]</h5>
 							<h6>글번호: [[${board.bid}]] &nbsp;&nbsp; 
 								<span th:text="${#temporals.format(board.modTime, 'yyyy-MM-dd HH:mm:ss')}"></span></h6>
-							<h6>카테고리:
-								<span th:each="file: ${fileList}">
-									<a th:href="@{/file/download/upload/{x}(x=${file})}" class="me-2" download>[[${file}]]</a>
-								</span>
-							</h6>
+							<h6>카테고리: [[${board.category}]]</h6>
 						</div>
 						<div class="col-4 text-end">
 							<h5>[[${board.uname}]]</h5>

@@ -90,13 +90,13 @@
                     <!-- 이미지 삽입 -->
                 </div>
                 <div class="post-content">
-                    <h3 class="post-title">가장 핫한 게시물</h3>
+                    <h3 class="post-title">즐겨찾기한 게시물</h3>
                     <div class="post-info">
                         <span><option value="uname" ${field eq 'uname' ? 'selected' : '' }>글쓴이</option></span>
                         <span>조회수</span>
                         <span>좋아요</span>
                     </div>
-                    <p class="post-excerpt">좋아요가 많은 것 = 핫하다</p>
+                    <p class="post-excerpt">즐겨찾기 게시물 내용</p>
                 </div>
             </div>
             <!-- 게시글 항목 반복 끝 -->
@@ -153,8 +153,7 @@
 						<tr th:each="board: ${boardList}">
 							<td>[[${board.bid}]]</td>
 							<td>
-								<a
-									th:href="@{/board/detail/{x}/{y}(x=${board.bid},y=${board.uid})}">[[${board.title}]]</a>
+								<a th:href="@{/board/detail/{x}/{y}(x=${board.bid},y=${board.uid})}">[[${board.title}]]</a>
 								<span th:if="${board.replyCount ge 1}">
 									<span class="text-danger">&#91;[[${board.replyCount}]]&#93;</span>
 								</span>
