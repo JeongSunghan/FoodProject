@@ -32,8 +32,18 @@
 								<td><textarea class="form-control" rows="10" name="content" id="content"></textarea></td>
 							</tr>
 							<tr>
-								<td><label class="col-form-label">첨부 파일</label></td>
-								<td><input type="file" name="files" class="form-control" multiple></td>
+								<td>
+									<div>
+										<select th:field="*{category}" class="form-select">
+											<option value="">카테고리를 선택해주세요</option> <!--선택안한 비어있는값-->
+											<option value="koreaFood">한식</option>
+											<option value="japanFood">일식</option>
+											<option value="americaFood">중식</option>
+											<option value="chineseFood">양식</option>
+										</select>
+									</div>
+								</td>
+							
 							</tr>
 							<tr>
 								<td colspan="2">

@@ -11,6 +11,7 @@ public class Board {
 	private int isDeleted;
 	private int viewCount;
 	private int likeCount;
+	private int replyCount;
 	private String uname;
 
 	//
@@ -21,11 +22,11 @@ public class Board {
 	private String address;
 	private String phoneNumber;
 
+	
 	public Board() {}
-
 	public Board(int bid, String title, String content, String uid, LocalDateTime modTime, int isDeleted, int viewCount,
-			int likeCount, String titleImage, String category, String foodName, String openClosed, String address,
-			String phoneNumber) {
+			int likeCount, int replyCount, String uname, String titleImage, String category, String foodName,
+			String openClosed, String address, String phoneNumber) {
 		this.bid = bid;
 		this.title = title;
 		this.content = content;
@@ -34,22 +35,50 @@ public class Board {
 		this.isDeleted = isDeleted;
 		this.viewCount = viewCount;
 		this.likeCount = likeCount;
+		this.replyCount = replyCount;
+		this.uname = uname;
 		this.titleImage = titleImage;
 		this.category = category;
 		this.foodName = foodName;
 		this.openClosed = openClosed;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
-
+		
+		
 	}
 
+	public Board(String title, String content, String uid, String titleImage, String category, String foodName,
+			String openClosed, String address, String phoneNumber) {
+		this.title = title;
+		this.content = content;
+		this.uid = uid;
+		this.titleImage = titleImage;
+		this.category = category;
+		this.foodName = foodName;
+		this.openClosed = openClosed;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+	}
+	
+	
+	//추가 수정+
+	public Board(String title, String content, String uid, String titleImage, String category, String foodName,
+			String openClosed) {
+		this.title = title;
+		this.content = content;
+		this.uid = uid;
+		this.titleImage = titleImage;
+		this.category = category;
+		this.foodName = foodName;
+		this.openClosed = openClosed;
+	}
 	@Override
 	public String toString() {
 		return "Board [bid=" + bid + ", title=" + title + ", content=" + content + ", uid=" + uid + ", modTime="
 				+ modTime + ", isDeleted=" + isDeleted + ", viewCount=" + viewCount + ", likeCount=" + likeCount
-				+ ", uname=" + uname + ", titleImage=" + titleImage + ", category=" + category + ", foodName="
-				+ foodName + ", openClosed=" + openClosed + ", address=" + address + ", phoneNumber=" + phoneNumber
-				+ "]";
+				+ ", replyCount=" + replyCount + ", uname=" + uname + ", titleImage=" + titleImage + ", category="
+				+ category + ", foodName=" + foodName + ", openClosed=" + openClosed + ", address=" + address
+				+ ", phoneNumber=" + phoneNumber + "]";
 	}
 
 	public int getBid() {
@@ -116,6 +145,14 @@ public class Board {
 		this.likeCount = likeCount;
 	}
 
+	public int getReplyCount() {
+		return replyCount;
+	}
+
+	public void setReplyCount(int replyCount) {
+		this.replyCount = replyCount;
+	}
+
 	public String getUname() {
 		return uname;
 	}
@@ -171,9 +208,4 @@ public class Board {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-
-	public String getFiles() {
-		return null;
-	}
-
 }

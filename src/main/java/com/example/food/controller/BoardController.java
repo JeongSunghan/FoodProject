@@ -44,17 +44,6 @@ public class BoardController {
 	// 메뉴 관련 정보를 저장하기 위한 필드
 	private String menu = "board";
 
-	/**
-	 * 게시글 목록 페이지로 이동하는 메소드
-	 * 
-	 * @param page    페이지 번호
-	 * @param field   검색 필드
-	 * @param query   검색어
-	 * @param session 세션 객체
-	 * @param model   모델 객체
-	 * @return 게시글 목록 페이지 뷰 이름
-	 */
-
 	@GetMapping("/list")
 	public String list(@RequestParam(name = "p", defaultValue = "1") int page,
 			@RequestParam(name = "f", defaultValue = "title") String field,
@@ -102,7 +91,8 @@ public class BoardController {
 
 	// 새로운 게시글을 등록하는 메소드
 	@PostMapping("/insert")
-	public String insertProc(String title, String content, MultipartHttpServletRequest req, HttpSession session) {
+	public String insertProc(String title, String content, MultipartHttpServletRequest req, HttpSession session,
+			String titleImage, String category, String foodName, String openClosed, String address, String phoneNumber) {
 		// 세션으로부터 사용자 아이디를 가져옴
 		String sessUid = (String) session.getAttribute("sessUid");
 		// 첨부 파일 리스트를 가져옴
@@ -116,7 +106,7 @@ public class BoardController {
 			if (part.getContentType().contains("octet-stream"))
 				continue;
 
-			// 첨부 파일의 원본 파일명을 가져옵니다.
+			// 첨부 파일의 원본 파일명을 가져옵니다.  ==> 카테고리로 설정?
 			String filename = part.getOriginalFilename();
 			// 업로드 경로를 지정합니다.
 			String uploadPath = uploadDir + "upload/" + filename;
@@ -132,10 +122,18 @@ public class BoardController {
 		}
 		// 파일명 리스트를 JSON 형태로 변환
 		String files = jsonUtil.list2Json(fileList);
+		
+		if (category == null || category.trim().isEmpty()) {
+		    category = "기본 카테고리"; // 기본값 설정
+		}
 
 		// 게시글 객체 생성 후 등록 => 수정해야함
-		Board board = new Board(0, title, content, sessUid, null, 0, 0, 0, files, files, files, files, files, files);
+		Board board = new Board(title, content, sessUid, titleImage, category, foodName, openClosed);
+		board.setAddress(address);
+		board.setPhoneNumber(phoneNumber);
+		// 기타 필드 설정
 		boardService.insertBoard(board);
+
 		return "redirect:/board/list";
 	}
 
@@ -150,7 +148,7 @@ public class BoardController {
 
 		// 게시글 및 첨부 파일 정보 가져오기 => 수정해야함
 		Board board = boardService.getBoard(bid);
-		String jsonFiles = board.getFiles();
+		String jsonFiles = board.getTitleImage();
 		if (!(jsonFiles == null || jsonFiles.equals(""))) {
 			List<String> fileList = jsonUtil.json2List(jsonFiles);
 			model.addAttribute("fileList", fileList);
