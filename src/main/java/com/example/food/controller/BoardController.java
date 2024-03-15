@@ -1,6 +1,5 @@
 package com.example.food.controller;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +91,8 @@ public class BoardController {
 	// 새로운 게시글을 등록하는 메소드
 	@PostMapping("/insert")
 	public String insertProc(String title, String content, MultipartHttpServletRequest req, HttpSession session,
-			String titleImage, String category, String foodName, String openClosed, String address, String phoneNumber) {
+			String titleImage, String category, String foodName, String openClosed, String address,
+			String phoneNumber) {
 		// 세션으로부터 사용자 아이디를 가져옴
 		String sessUid = (String) session.getAttribute("sessUid");
 		// 첨부 파일 리스트를 가져옴
@@ -105,26 +105,12 @@ public class BoardController {
 			// 첨부 파일의 컨텐츠 타입이 "octet-stream"을 포함하면 다음 반복을 건너뜁니다.
 			if (part.getContentType().contains("octet-stream"))
 				continue;
-
-			// 첨부 파일의 원본 파일명을 가져옵니다.  ==> 카테고리로 설정?
-			String filename = part.getOriginalFilename();
-			// 업로드 경로를 지정합니다.
-			String uploadPath = uploadDir + "upload/" + filename;
-			try {
-				// 첨부 파일을 업로드 경로에 저장합니다.
-				part.transferTo(new File(uploadPath));
-			} catch (Exception e) {
-				// 파일 전송 중 예외가 발생한 경우 예외 내용을 출력합니다.
-				e.printStackTrace();
-			}
-			// 파일 목록에 업로드된 파일의 파일명을 추가합니다.
-			fileList.add(filename);
 		}
 		// 파일명 리스트를 JSON 형태로 변환
 		String files = jsonUtil.list2Json(fileList);
-		
+
 		if (category == null || category.trim().isEmpty()) {
-		    category = "기본 카테고리"; // 기본값 설정
+			category = "기본 카테고리"; // 기본값 설정
 		}
 
 		// 게시글 객체 생성 후 등록 => 수정해야함
