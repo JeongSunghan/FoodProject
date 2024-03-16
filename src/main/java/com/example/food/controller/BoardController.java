@@ -91,10 +91,12 @@ public class BoardController {
 	// 새로운 게시글을 등록하는 메소드
 	@PostMapping("/insert")
 	public String insertProc(String title, String content, MultipartHttpServletRequest req, HttpSession session,
-			String titleImage, String category, String foodName, String openClosed, String address,
+			String titleImage, String category, String foodName,   String openTime, String closeTime,  String address,
 			String phoneNumber) {
 		// 세션으로부터 사용자 아이디를 가져옴
 		String sessUid = (String) session.getAttribute("sessUid");
+		String openClosed = openTime + " - " + closeTime; 
+		
 		// 첨부 파일 리스트를 가져옴
 		List<MultipartFile> uploadFileList = req.getFiles("files");
 
@@ -132,7 +134,7 @@ public class BoardController {
 		if (!uid.equals(sessUid) && (option == null || option.equals("")))
 			boardService.increaseViewCount(bid);
 
-		// 게시글 및 첨부 파일 정보 가져오기 => 수정해야함
+		// 게시글 및 첨부 파일 정보 가져오기
 		Board board = boardService.getBoard(bid);
 		String jsonFiles = board.getTitleImage();
 		if (!(jsonFiles == null || jsonFiles.equals(""))) {
@@ -140,7 +142,9 @@ public class BoardController {
 			model.addAttribute("fileList", fileList);
 		}
 		model.addAttribute("board", board);
-		System.out.println(board.getCategory());
+		
+		//가게 정보 가져오는 로직
+		
 
 		// 좋아요 처리
 		Like like = likeService.getLike(bid, sessUid);

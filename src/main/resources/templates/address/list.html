@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>주소로 장소 표시하기</title>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=405c285f704f2770e6ceff445cb6e60f"></script>
+</head>
+<body>
+<div id="map" style="width:100%;height:350px;"></div>
+<script>
+    var roadAddress = [[${roadAddress}]]; // 서버에서 전달된 주소 정보
+
+    var geocoder = new kakao.maps.services.Geocoder();
+    geocoder.addressSearch(roadAddress, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            var map = new kakao.maps.Map(document.getElementById('map'), {
+                center: coords,
+                level: 3
+            });
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: coords
+            });
+        }
+    });
+</script>
+</body>
+</html>

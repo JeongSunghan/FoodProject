@@ -24,11 +24,23 @@
 					<form action="/food/board/insert" method="post" enctype="multipart/form-data">
 						<table class="table table-borderless">
 							<tr>
-								<td style="width: 15%;"><label class="col-form-label">제목</label></td>
+								<td style="width: 15%;"><label class="col-form-label">가게 이름</label></td>
 								<td style="width: 85%;"><input type="text" name="title" class="form-control"></td>
 							</tr>
 							<tr>
-								<td><label class="col-form-label">내용</label></td>
+								<tr>
+									<td><label for="phoneNumber" class="col-form-label">가게 번호</label></td>
+									<td><input type="text" id="phoneNumber" name="phoneNumber" class="form-control" /></td>
+								</tr>
+								<tr>
+									<td><label for="openTime" class="col-form-label">영업 시작 시간</label></td>
+									<td><input type="text" id="openTime" name="openTime" class="form-control" placeholder="오픈 시간"/></td>
+								</tr>
+								<tr>
+									<td><label for="closeTime" class="col-form-label">영업 종료 시간</label></td>
+									<td><input type="text" id="closeTime" name="closeTime" class="form-control" placeholder="닫는 시간"/></td>
+								</tr>
+								<!-- 가게 주소  = address 파일 활용-->
 								<td><textarea class="form-control" rows="10" name="content" id="content"></textarea></td>
 							</tr>
 							<tr>
