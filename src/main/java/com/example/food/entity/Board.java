@@ -72,6 +72,21 @@ public class Board {
 		this.foodName = foodName;
 		this.openClosed = openClosed;
 	}
+	
+
+	//업데이트 생성자
+	public Board(int bid, String title, String content, String uid, String titleImage, String category, String foodName,
+			String openClosed) {
+		this.bid = bid;
+		this.title = title;
+		this.content = content;
+		this.uid = uid;
+		this.titleImage = titleImage;
+		this.category = category;
+		this.foodName = foodName;
+		this.openClosed = openClosed;
+	}
+	
 	@Override
 	public String toString() {
 		return "Board [bid=" + bid + ", title=" + title + ", content=" + content + ", uid=" + uid + ", modTime="

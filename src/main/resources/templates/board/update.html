@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <header th:replace="~{fragments/base :: head}"></header>
+    <style>
+        td,
+        th {
+            text-align: center;
+        }
+
+        .container {
+            margin-top: 100px;
+            margin-bottom: 100px;
+        }
+    </style>
+    <script src="https://cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+</head>
+
+<body>
+    <div th:insert="~{fragments/base :: top}"></div>
+
+    <div class="container">
+        <div class="row">
+            <!-- <div class="col-3">
+                <aside th:replace="~{fragments/base :: aside}"></aside>
+            </div> -->
+
+            <div class="col-9">
+                <main id="main">
+                    <h3><strong>게시글 수정</strong></h3>
+                    <hr>
+                    <form action="/food/board/update" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="bid" th:value="${board.bid}">
+                        <input type="hidden" name="uid" th:value="${board.uid}">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td style="width: 15%;"><label class="col-form-label">가게명</label></td>
+                                <td style="width: 85%;" colspan="2">
+                                    <input type="text" name="title" class="form-control" th:value="${board.title}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="phoneNumber" class="col-form-label">가게 전화번호</label></td>
+                                <td><input type="text" id="phoneNumber" name="phoneNumber" class="form-control"
+                                        th:value="${board.phoneNumber}"></td>
+                            </tr>
+                            <tr>
+                                <td><label for="openTime" class="col-form-label">영업
+                                        시작시간</label></td>
+                                <td><input type="time" id="openTime" name="openTime" class="form-control"
+                                        placeholder="영업 시작" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="closeTime" class="col-form-label">영업
+                                        종료시간</label></td>
+                                <td><input type="time" id="closeTime" name="closeTime" class="form-control"
+                                        placeholder="영업 종료" /></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <select class="form-select" name="category">
+                                            <option value="">카테고리를 선택해주세요</option>
+                                            <option value="한식" ${field eq '한식' ? 'selected' : '' }>한식</option>
+                                            <option value="일식" ${field eq '일식' ? 'selected' : '' }>일식</option>
+                                            <option value="중식" ${field eq '중식' ? 'selected' : '' }>중식</option>
+                                            <option value="양식" ${field eq '양식' ? 'selected' : '' }>양식</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img th:src="@{/file/profile/{x}(x=${board.titleImage})}"></td>
+                                <td><label class="col-form-label">타이틀 이미지</label></td>
+                                <td><input type="file" name="profile" class="form-control"></td>
+                            </tr>
+
+
+
+                            <tr>
+                                <td><label class="col-form-label">내용</label></td>
+                                <td colspan="2">
+                                    <textarea class="form-control" rows="10"
+                                        name="content">[[${board.content}]]</textarea>
+                                </td>
+                            </tr>
+
+
+
+                            <tr>
+                                <td colspan="3" style="text-align: center;">
+                                    <input class="btn btn-primary" type="submit" value="수정">
+                                    <input class="btn btn-secondary" type="reset" value="취소">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{fragments/base :: bottom}"></footer>
+    <script>
+        CKEDITOR.replace('content', {
+            filebrowserImageUploadUrl: '/food/file/imageUpload',
+            filebrowserUploadMethod: 'form',
+            height: 350, width: '100%'
+        });
+    </script>
+</body>
+
+</html>

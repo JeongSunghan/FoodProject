@@ -1,5 +1,6 @@
 package com.example.food.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import com.example.food.entity.Reply;
 import com.example.food.service.BoardService;
 import com.example.food.service.LikeService;
 import com.example.food.service.ReplyService;
+import com.example.food.util.ImageUtil;
 import com.example.food.util.JsonUtil;
 
 import jakarta.servlet.http.HttpSession;
@@ -37,6 +39,8 @@ public class BoardController {
 	private LikeService likeService;
 	@Autowired
 	private JsonUtil jsonUtil;
+	@Autowired
+	private ImageUtil imageUtil;
 	// 파일 업로드 디렉토리 설정값을 주입받기 위한 필드
 	@Value("${spring.servlet.multipart.location}")
 	private String uploadDir;
@@ -91,14 +95,27 @@ public class BoardController {
 	// 새로운 게시글을 등록하는 메소드
 	@PostMapping("/insert")
 	public String insertProc(String title, String content, MultipartHttpServletRequest req, HttpSession session,
-			String titleImage, String category, String foodName,   String openTime, String closeTime,  String address,
+			String titleImage, String category, String foodName, String openTime, String closeTime, String address,
 			String phoneNumber) {
 		// 세션으로부터 사용자 아이디를 가져옴
 		String sessUid = (String) session.getAttribute("sessUid");
-		String openClosed = openTime + " - " + closeTime; 
-		
+		String openClosed = openTime + " - " + closeTime;
+		String filename = null;
+		MultipartFile filePart = req.getFile("profile");
+
 		// 첨부 파일 리스트를 가져옴
 		List<MultipartFile> uploadFileList = req.getFiles("files");
+
+		if (filePart.getContentType().contains("image")) {
+			filename = filePart.getOriginalFilename();
+			String path = uploadDir + "profile/" + filename;
+			try {
+				filePart.transferTo(new File(path));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			filename = imageUtil.squareImage(sessUid, filename);
+		}
 
 		// 업로드된 파일을 서버에 저장하고 파일명을 리스트에 추가
 		List<String> fileList = new ArrayList<>();
@@ -111,12 +128,13 @@ public class BoardController {
 		// 파일명 리스트를 JSON 형태로 변환
 		String files = jsonUtil.list2Json(fileList);
 
+		// 카테고리 설정
 		if (category == null || category.trim().isEmpty()) {
 			category = "기본 카테고리"; // 기본값 설정
 		}
 
 		// 게시글 객체 생성 후 등록 => 수정해야함
-		Board board = new Board(title, content, sessUid, titleImage, category, foodName, openClosed);
+		Board board = new Board(title, content, sessUid, filename, category, foodName, openClosed);
 		board.setAddress(address);
 		board.setPhoneNumber(phoneNumber);
 		// 기타 필드 설정
@@ -125,26 +143,16 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
-	// 게시글 상세 페이지로 이동하는 메소드
 	@GetMapping("/detail/{bid}/{uid}")
 	public String detail(@PathVariable int bid, @PathVariable String uid, String option, HttpSession session,
 			Model model) {
-		// 게시글 조회수 증가 처리
+		// 본인이 조회한 경우 또는 댓글 작성후에는 조회수 증가시키지 않음
 		String sessUid = (String) session.getAttribute("sessUid");
 		if (!uid.equals(sessUid) && (option == null || option.equals("")))
 			boardService.increaseViewCount(bid);
 
-		// 게시글 및 첨부 파일 정보 가져오기
 		Board board = boardService.getBoard(bid);
-		String jsonFiles = board.getTitleImage();
-		if (!(jsonFiles == null || jsonFiles.equals(""))) {
-			List<String> fileList = jsonUtil.json2List(jsonFiles);
-			model.addAttribute("fileList", fileList);
-		}
 		model.addAttribute("board", board);
-		
-		//가게 정보 가져오는 로직
-		
 
 		// 좋아요 처리
 		Like like = likeService.getLike(bid, sessUid);
@@ -154,10 +162,8 @@ public class BoardController {
 			session.setAttribute("likeClicked", like.getValue());
 		model.addAttribute("count", board.getLikeCount());
 
-		// 댓글 목록 가져오기
 		List<Reply> replyList = replyService.getReplyList(bid);
 		model.addAttribute("replyList", replyList);
-		model.addAttribute("menu", menu);
 		return "board/detail";
 	}
 
@@ -198,4 +204,82 @@ public class BoardController {
 		model.addAttribute("count", count);
 		return "board/detail::#likeCount";
 	}
+
+	@GetMapping("/update/{bid}")
+	public String updateForm(@PathVariable int bid, HttpSession session, Model model) {
+		Board board = boardService.getBoard(bid);
+		model.addAttribute("board", board);
+		return "board/update";
+	}
+
+	@PostMapping("/update")
+	public String updateProc(int bid, String uid, MultipartHttpServletRequest req, HttpSession session, String category,
+			String foodName, String openTime, String closeTime, String address, String phoneNumber) {
+		String title = req.getParameter("title");
+		String content = req.getParameter("content");
+		String sessUid = (String) session.getAttribute("sessUid");
+		String openClosed = openTime + " - " + closeTime;
+		String filename = null;
+		MultipartFile filePart = req.getFile("profile");
+
+		// 타이틀 업데이트 로직
+		if (filePart.getContentType().contains("image")) {
+			filename = filePart.getOriginalFilename();
+			String path = uploadDir + "profile/" + filename;
+			try {
+				filePart.transferTo(new File(path));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			filename = imageUtil.squareImage(sessUid, filename);
+		}
+
+		List<String> additionalFileList = (List<String>) session.getAttribute("fileList");
+		if (additionalFileList == null)
+			additionalFileList = new ArrayList<>();
+		String[] delFileList = req.getParameterValues("delFile");
+		if (delFileList != null) {
+			for (String delName : delFileList) {
+				File delFile = new File(uploadDir + "upload/" + delName);
+				delFile.delete();
+				additionalFileList.remove(delName);
+			}
+		}
+
+		List<MultipartFile> fileList = req.getFiles("files");
+		for (MultipartFile part : fileList) {
+			if (part.getContentType().contains("octet-stream"))
+				continue;
+			filename = part.getOriginalFilename();
+			additionalFileList.add(filename);
+			String uploadFile = uploadDir + "upload/" + filename;
+			File file = new File(uploadFile);
+			try {
+				part.transferTo(file);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (category == null || category.trim().isEmpty()) {
+			category = "기본 카테고리"; // 기본값 설정
+		}
+
+		// 게시글 객체 업데이트 로직
+		Board board = boardService.getBoard(bid);
+		board.setTitle(title);
+		board.setContent(content);
+		board.setCategory(category);
+		board.setFoodName(foodName);
+		board.setOpenClosed(openClosed);
+		board.setTitleImage(filename);
+		board.setAddress(address);
+		board.setPhoneNumber(phoneNumber);
+
+		// 게시글 정보를 데이터베이스에 업데이트
+		boardService.updateBoard(board);
+
+		return "redirect:/board/detail/" + bid + "/" + sessUid;
+	}
+
 }
