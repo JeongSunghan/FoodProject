@@ -6,6 +6,10 @@ public class Like {
 	private int bid;
 	private int value;
 	
+	public Like(String uid, int bid) {
+		this.uid = uid;
+		this.bid = bid;
+	}
 	public Like() { }
 	public Like(int lid, String uid, int bid, int value) {
 		this.lid = lid;
@@ -13,13 +17,12 @@ public class Like {
 		this.bid = bid;
 		this.value = value;
 	}
-
+	
 	public Like(String uid, int bid, int value) {
 		this.uid = uid;
 		this.bid = bid;
 		this.value = value;
 	}
-	
 	@Override
 	public String toString() {
 		return "Like [lid=" + lid + ", uid=" + uid + ", bid=" + bid + ", value=" + value + "]";

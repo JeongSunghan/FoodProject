@@ -9,14 +9,13 @@ import org.apache.ibatis.annotations.Update;
 
 import com.example.food.entity.Like;
 
-
 @Mapper
 public interface LikeDao {
 	
-	@Select("select * from likes where bid=#{bid} and uid=#{uid}")
+	@Select("select * from likes where uid=#{uid} and bid=#{bid}")
 	Like getLike(int bid, String uid);
 	
-	@Select("select * from like where lid=#{lid}")
+	@Select("select * from likes where lid=#{lid}")
 	Like getLikeByLid(int lid);
 	
 	@Select("select * from likes where bid=#{bid}")
@@ -25,8 +24,6 @@ public interface LikeDao {
 	@Insert("insert into likes values(default, #{uid}, #{bid}, #{value})")
 	void insertLike(Like like);
 	
-	
-	// update likes set value=if(value 0, 1, 0) where lid=#{lid}
 	@Update("update likes set value=#{value} where lid=#{lid}")
-	void updateLike(Like like);
+	void updateLike(Like like);	
 }

@@ -2,51 +2,53 @@ package com.example.food.entity;
 
 import java.time.LocalDateTime;
 
-public class Reply {
-	private int rid;
+public class NReply {
+	private int nid;
 	private String comment;
 	private LocalDateTime regTime;
 	private String uid;
 	private int bid;
+	private int rid;
 	private int isMine;
 	private int isDeleted;
 	private String uname;
 	
-	public Reply(String comment, String uid, int bid, int isMine) {
+	public NReply(int nid, String comment) {
+		this.nid = nid;
+		this.comment = comment;
+	}
+	public NReply(String comment, String uid, int bid, int rid, int isMine) {
 		this.comment = comment;
 		this.uid = uid;
 		this.bid = bid;
+		this.rid = rid;
 		this.isMine = isMine;
 	}
-	public Reply() { }
-	public Reply(int rid, String comment, LocalDateTime regTime, String uid, int bid, int isMine, int isDeleted,
-			String uname) {
-		this.rid = rid;
+	public NReply() { }
+	public NReply(int nid, String comment, LocalDateTime regTime, String uid, int bid, int rid, int isMine,
+			int isDeleted, String uname) {
+		this.nid = nid;
 		this.comment = comment;
 		this.regTime = regTime;
 		this.uid = uid;
 		this.bid = bid;
+		this.rid = rid;
 		this.isMine = isMine;
 		this.isDeleted = isDeleted;
 		this.uname = uname;
 	}
 	
-	public Reply(int rid, String comment) {
-		this.rid = rid;
-		this.comment = comment;
-	}
-	
 	@Override
 	public String toString() {
-		return "Reply [rid=" + rid + ", comment=" + comment + ", regTime=" + regTime + ", uid=" + uid + ", bid=" + bid
-				+ ", isMine=" + isMine + ", isDeleted=" + isDeleted + ", uname=" + uname + "]";
+		return "NReply [nid=" + nid + ", comment=" + comment + ", regTime=" + regTime + ", uid=" + uid + ", bid=" + bid
+				+ ", rid=" + rid + ", isMine=" + isMine + ", isDeleted=" + isDeleted + ", uname=" + uname + "]";
 	}
 	
-	public int getRid() {
-		return rid;
+	public int getNid() {
+		return nid;
 	}
-	public void setRid(int rid) {
-		this.rid = rid;
+	public void setNid(int nid) {
+		this.nid = nid;
 	}
 	public String getComment() {
 		return comment;
@@ -71,6 +73,12 @@ public class Reply {
 	}
 	public void setBid(int bid) {
 		this.bid = bid;
+	}
+	public int getRid() {
+		return rid;
+	}
+	public void setRid(int rid) {
+		this.rid = rid;
 	}
 	public int getIsMine() {
 		return isMine;

@@ -29,6 +29,8 @@ CREATE TABLE board
 	openClosed varchar(20),
 	address varchar(250),
 	phoneNumber varchar(15),
+	replyCount int DEFAULT 0,
+	reviewStar int DEFAULT 1
 	PRIMARY KEY (bid)
 );
 
@@ -148,5 +150,12 @@ ALTER TABLE reply
 	ON DELETE RESTRICT
 ;
 
-
+CREATE TRIGGER update_nreply_isdeleted
+AFTER UPDATE ON Reply
+FOR EACH ROW
+BEGIN
+    IF NEW.isDeleted = 1 THEN
+        UPDATE NReply SET isDeleted = 1 WHERE rid = NEW.rid;
+    END IF;
+END;
 

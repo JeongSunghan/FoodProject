@@ -19,15 +19,15 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int getBoardCount(String field, String query) {
-		query = "%" + query + "%";
+		query = "'%" + query + "%'";
 		return boardDao.getBoardCount(field, query);
 	}
 
 	@Override
-	public List<Board> getBoardList(int page, String field, String query) {
-		int offset = (page - 1) * COUNT_PER_PAGE;
-		query = "%" + query + "%";
-		return boardDao.getBoardList(field, query, COUNT_PER_PAGE, offset);
+	public List<Board> getBoardList(String field, String query) {
+//		int offset = (page - 1) * COUNT_PER_PAGE;
+		query = "'%" + query + "%'";
+		return boardDao.getBoardList(field, query);
 	}
 
 	@Override
@@ -62,4 +62,33 @@ public class BoardServiceImpl implements BoardService {
 		boardDao.updateLikeCount(bid, count);
 	}
 
+	//추가
+	@Override
+	public List<Board> getBestList(String field) {
+		return boardDao.getBestList(field);
+	}
+	
+
+	@Override
+	public int replyCount(int bid) {
+		return boardDao.replyCount(bid);
+	}
+
+	@Override
+	public void updateReplyCount(int bid, int count) {
+		boardDao.updateReplyCount(bid, count);
+	}
+	
+	@Override
+	public List<Board> getLikeList(String uid) {
+		return boardDao.getLikeList(uid);
+	}
+
+	@Override
+	public List<Board> getSearchList(String query) {
+		query = query.replace("'", "''");
+		query = "'%" + query + "%'";
+		return boardDao.getSearchList(query);
+	}
+	//
 }

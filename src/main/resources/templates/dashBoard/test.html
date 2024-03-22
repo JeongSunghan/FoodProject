@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chart Example</title>
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  window.onload = function() {
+    // Chart 데이터 정의
+    const data = {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '좋아요',
+            data: [1, 2, 3, 4, 5, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+    
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+            ],
+            borderWidth: 1
+        }]
+    };
+    
+    // Chart 생성
+    const ctx = document.getElementById('chart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+  }
+  </script>
+</head>
+<body>
+
+<div style="width: 200px; height: 200px;">
+  <canvas id="chart" width="100" height="100"></canvas>
+</div>
+
+</body>

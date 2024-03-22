@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <header th:replace="~{fragments/base :: head}"></header>
+    <style>
+        th, td {padding: 3px;}
+        .fixed-aside {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #343a40;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            }
+            .menu {
+            font-size: 24px;
+            }
+    </style>
+</head>
+<body style="margin: 50px;">
+    <footer th:replace="~{fragments/base :: top}"></footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <aside th:replace="~{fragments/base :: aside}"></aside>
+            </div>
+            <div class="col-10">
+                <table border="1" class="table center mt-5 ms-3">
+                    <tr>
+                        <th>ID</th>
+                        <th>유저명</th>
+                        <th>이메일</th>
+                        <th>생성날짜</th>
+                        <th>액션</th>
+                    </tr>
+                    <tr th:each="user: ${userList}">
+                        <td th:text="${user.uid}">james</td>
+                        <td th:text="${user.uname}">제임스</td>
+                        <td th:text="${user.email}">james@gmail.com</td>
+                        <td th:text="${user.regDate}">2024-03-06</td>
+                        <td>
+                            <!-- <a th:href="@{/user/update/{x}(x=${user.uid})}">수정</a> -->
+                            <a th:href="@{/user/delete/{x}(x=${user.uid})}">삭제</a>
+                        </td>
+                    </tr>
+                </table>
+                <ul class="pagination justify-content-center mt-4">
+                    <li class="page-item"><a class="page-link" href="#"><i class="fa-solid fa-less-than"></i></a></li>
+                    <div th:each="page: ${pageList}">
+                            <li class="page-item" th:class="${session.currentUserPage eq page ? 'active' : ''}">
+                            <a class="page-link" th:href="@{/dashBoard/userList/{p}(p=${page})}" th:text="${page}"></a>
+                        </li>
+                    </div>
+                    <li class="page-item"><a class="page-link" href="#"><i class="fa-solid fa-greater-than"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="~{fragments/base :: bottom}"></footer>
+</body>
+</html>

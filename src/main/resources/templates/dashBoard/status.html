@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <header th:replace="~{fragments/base :: head}"></header>
+  <style>
+    th, td {
+      padding: 3px;
+      vertical-align: middle;
+    }
+    .fixed-aside {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #343a40;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .menu {
+      font-size: 24px;
+    }
+
+  </style>
+</head>
+<body>
+  <footer th:replace="~{fragments/base :: top}"></footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-3">
+        <aside th:replace="~{fragments/base :: aside}"></aside>
+      </div>
+      <div class="col-9">
+        <div class="row" style="margin-top: 90px;">
+          <div class="col-4">
+            <div class="card">
+              <table class="table">
+                <tr class="table-danger"><th colspan="3">LIKE BEST 5</th></tr>
+                <tr th:each="likeBL, iterStat : ${likeBestList}" th:class="${iterStat.index == 0 ? 'table-danger' : ''}" th:style="${iterStat.index == 0 ? 'height: 80px; ' : ''}">
+                    <td>
+                      <a th:href="@{/board/detail/{x}/{y}(x=${likeBL.bid},y=${likeBL.uid})}">
+                        <img th:src = "@{/file/profile/{x}(x=${likeBL.titleImage})}" style="width: 70px;" height="60px">
+                      </a>
+                    </td>
+                    <td><a th:href="@{/board/detail/{x}/{y}(x=${likeBL.bid},y=${likeBL.uid})}" class="text-dark">[[${likeBL.title}]]</a></td>
+                    <td><a th:href="@{/board/detail/{x}/{y}(x=${likeBL.bid},y=${likeBL.uid})}" class="text-dark">좋아요: [[${likeBL.likeCount}]]</a></td>  
+                </tr>
+              </table>
+            </div>  
+            <div></div>
+          </div>
+          <div class="col-4">
+            <div class="card">
+              <table class="table">
+                <tr class="table-primary"><th colspan="3">VIEW BEST 5</th></tr>
+                <tr th:each="viewBL, iterStat: ${viewBestList}" th:class="${iterStat.index == 0 ? 'table-primary' : ''}" th:style="${iterStat.index == 0 ? 'height: 80px; ' : ''}">
+                  <td>
+                    <a th:href="@{/board/detail/{x}/{y}(x=${viewBL.bid},y=${viewBL.uid})}">
+                      <img th:src = "@{/file/profile/{x}(x=${viewBL.titleImage})}" style="width: 70px;" height="60px">
+                    </a>
+                  </td>
+                  <td><a th:href="@{/board/detail/{x}/{y}(x=${viewBL.bid},y=${viewBL.uid})}" class="text-dark">[[${viewBL.title}]]</a></td>
+                  <td><a th:href="@{/board/detail/{x}/{y}(x=${viewBL.bid},y=${viewBL.uid})}" class="text-dark">조회수: [[${viewBL.viewCount}]]</a></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card">
+              <table class="table">
+                <tr class="table-danger"><th colspan="3">REPLY BEST 5</th></tr>
+                <tr th:each="replyBL, iterStat: ${replyBestList}" th:class="${iterStat.index == 0 ? 'table-danger' : ''}" th:style="${iterStat.index == 0 ? 'height: 80px; ' : ''}">
+                  <td>
+                    <a th:href="@{/board/detail/{x}/{y}(x=${replyBL.bid},y=${replyBL.uid})}">
+                      <img th:src = "@{/file/profile/{x}(x=${replyBL.titleImage})}" style="width: 70px;" height="60px">
+                    </a>
+                  </td>
+                  <td><a th:href="@{/board/detail/{x}/{y}(x=${replyBL.bid},y=${replyBL.uid})}" class="text-dark">[[${replyBL.title}]]</a></td>
+                  <td><a th:href="@{/board/detail/{x}/{y}(x=${replyBL.bid},y=${replyBL.uid})}" class="text-dark">댓글수: [[${replyBL.replyCount}]]</a></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer th:replace="~{fragments/base :: bottom}"></footer>
+</body>
+</html>

@@ -1,11 +1,14 @@
 package com.example.food.controller;
 
+import java.io.File;
 import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.example.food.entity.User;
 import com.example.food.service.UserService;
 
@@ -109,20 +115,13 @@ public class UserController {
 		user.setUname(uname);
 		user.setEmail(email);
 		uSvc.updateUser(user);
-		return "redirect:/user/list";
-	}
-	
-	@GetMapping(value={"/list/{page}", "/list"})
-	public String list(@PathVariable(required=false) Integer page, Model model) {	//list를 던져주기위해 model사용
-		page = (page == null) ? 1 : page;
-		List<User> list = uSvc.getUserList(page);
-		model.addAttribute("userList", list);
-		return "user/list";
+		return "redirect:/board/list";
 	}
 	
 	@GetMapping("/delete/{uid}")
 	public String delete(@PathVariable String uid, HttpSession session) {
 		uSvc.deleteUser(uid);
-		return "redirect:/user/list/1";
+		return "redirect:/dashBoard/userList";
 	}
+	
 }
